@@ -1,10 +1,10 @@
 .card {
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
   width: 200px;
-  height: 300px;
   clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
-  overflow: hidden;
+  /* overflow: hidden; */
   border-radius: 0 10px 0 10px;
+  display: inline-block;
 }
 .pokemonImg {
   width: 100%;

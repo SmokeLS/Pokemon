@@ -1,60 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { EventHandler, useEffect, useState } from 'react';
+import { NavLink, Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
-import { connect, useSelector } from 'react-redux';
-import { setInitializedPokemon, setInitializedCount } from './redux/app-reducer';
-import { compose } from 'redux';
-import PokemonCard from './components/PokemonCard/PokemonCard';
-import { AppStateType } from './redux/redux-store';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Preloader from './common/Preloader/Preloader';
+import PokemonPage from './components/PokemonPage/PokemonPage';
+import Main from './components/Main/Main';
+import PokemonSpeciesPage from './components/PokemonSpeciesPage/PokemonSpeciesPage';
 
-// type PropsType = {
-//   requestUsers: (id: number) => void;
-// };
-
-// : React.FC<PropsType>
+import MenuNavigation from './components/MenuNavigation/MenuNavigation';
+import { AppStateType } from './redux/redux-store';
+import { setInitializedCount, setInitializedPokemon } from './redux/app-reducer';
 
 type PropsType = {
-  pokemons: any;
-  setInitializedPokemon: any;
-  setInitializedCount: any;
-  // setPokemon: any;
+  setInitializedPokemon: () => void;
+  setInitializedCount: () => void;
 };
 
 const App: React.FC<PropsType> = (props) => {
-  //  const count = useSelector((state: any) => state.app.count);
-  const pokemons = useSelector((state: AppStateType) => state.app.pokemons);
-
-  let [portionNumber, setPortionNumber] = useState(1);
-
-  const { setInitializedPokemon, setInitializedCount } = props;
+  const dispatch = useDispatch();
+  const count = useSelector((state: AppStateType) => state.app.count);
+  const isLoading = useSelector((state: AppStateType) => state.app.isLoading);
 
   useEffect(() => {
-    setInitializedPokemon();
-    setInitializedCount();
-  }, [setInitializedPokemon, setInitializedCount]);
+    dispatch(setInitializedPokemon());
+    dispatch(setInitializedCount());
+  }, [dispatch]);
 
-  const pages: Array<number> = [];
-
-  const pageSize: number = 20;
-  //  const totalCount: number = 1;
-  //  const portionCount: number = Math.ceil(totalCount / pageSize);
-
-  const leftBorderPagination: number = (portionNumber - 1) * pageSize + 1;
-  const rightBorderPagination: number = portionNumber * pageSize;
-
-  for (let i = leftBorderPagination; i <= rightBorderPagination; i++) {
-    pages.push(i);
-  }
-
-  if (!pokemons) {
+  if (isLoading) {
     return <Preloader />;
   }
 
-  return pages.map((item) => <PokemonCard pokemon={pokemons[item - 1]} id={item} />);
+  return (
+    <>
+      <MenuNavigation count={count} />
+      <Switch>
+        <Route path="/" exact>
+          <Redirect to="/pokemons" />
+        </Route>
+        <Route path="/pokemon/:id?" render={() => <PokemonPage />} />
+        <Route path="/pokemon-species/:id?" render={() => <PokemonSpeciesPage />} />
+        <Route path="/pokemons" render={() => <Main count={count} />} />
+        {/* <Route path="*" render={() => <NotFoundPage />} /> */}
+      </Switch>
+    </>
+  );
 };
 
-const mapStateToProps = (state: AppStateType) => {
-  return {};
-};
-
-export default compose(connect(mapStateToProps, { setInitializedPokemon, setInitializedCount }))(App);
+export default App;

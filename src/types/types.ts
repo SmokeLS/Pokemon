@@ -1,42 +1,42 @@
 export type PokemonType = {
   abilities: Array<AbilitiesType>;
-  BaseExperience: number;
+  base_experience: number;
   forms: Array<GeneralType>;
-  gameIndices : Array<GameIndicesType>;
+  game_indices : Array<GameIndicesType>;
   height: number;
-  heldItems: Array<HeldItemsType>;
+  held_items: Array<HeldItemsType>;
   id: number;
-  isDefault: boolean;
-  locationAreaEncounters: string;
+  is_default: boolean;
+  location_area_encounters: string;
   moves : Array<MovesType>;
   name: string;
   order: number;
   species: GeneralType;
   sprites : SpritesType;
   stats: Array<StatsType>;
-  types: Array<PokemonSpeciesType>
+  types: Array<PokemonTypesType>
   weight: number;
 };
 
-type AbilitiesType = {
-  ability: Array<GeneralType>;
-  isHidden: boolean;
-  slot: number;
-}
-
-type GeneralType = {
+export type GeneralType = {
   name: string;
   url : string;
 }
 
+type AbilitiesType = {
+  ability: GeneralType;
+  is_hidden: boolean;
+  slot: number;
+}
+
 export type GameIndicesType = {
-  gameIndex: number;
+  game_indices: number;
   version: GeneralType;
 }
 
 type HeldItemsType = {
   item : GeneralType;
-  versionDetails: Array<VersionDetailsType>;
+  version_details: Array<VersionDetailsType>;
 }
 
 type VersionDetailsType = {
@@ -46,147 +46,203 @@ type VersionDetailsType = {
 
 type MovesType = {
   move : GeneralType;
-  versionGroupDetails: Array<VersionGroupDetailsType>;
+  version_group_details: Array<VersionGroupDetailsType>;
 }
 
 type VersionGroupDetailsType = {
-  levelLearnedAt: number;
-  moveLearnMethod: GeneralType;
-  versionGroup: GeneralType;
+  level_learned_at: number;
+  move_learn_method: GeneralType;
+  version_group: GeneralType;
 }
 
 type SpritesType = {
-  backDefault: string;
-  backFemale: string;
-  backShiny: string;
-  backShinyFemale: string;
-  frontDefault: string;
-  frontFemale: string;
-  frontShiny: string;
-  frontShinyFemale: string;
+  back_default: string;
+  back_female: string;
+  back_shiny: string;
+  back_shiny_female: string;
+  front_default: string;
+  front_female: string;
+  front_shiny: string;
+  front_shiny_female: string;
   other: OtherSpritesType;
   versions: VersionsSpriteType;
 }
 
 type OtherSpritesType = {
-  dreamWorld: DreamWorldType;
-  officialArtwork : {
-    frontDefault: string;
+  dream_world: DreamWorldType;
+  official_artwork : {
+    front_default: string;
   }
 }
 
 type DreamWorldType = {
-  frontDefault: string;
-  frontFemale: string;
+  front_default: string;
+  front_female: string;
 }
 
 type VersionsSpriteType = {
-  generationI: generationIType;
-  generationII: generationIIType;
-  generationIII: generationIIIType;
-  generationIV: generationIVType;
-  generationV: generationVInterface;
-  generationVI: generationVIType;
-  generationVII: generationVIIType;
-  generationVIII: generationVIIIType;
+  generationI: GenerationIType;
+  generationII: GenerationIIType;
+  generationIII: GenerationIIIType;
+  generationIV: GenerationIVType;
+  generationV: GenerationVInterface;
+  generationVI: GenerationVIType;
+  generationVII: GenerationVIIType;
+  generationVIII: GenerationVIIIType;
 }
 
-type generationIType = {
-  redBlue: GenerationIColorType;
+type GenerationIType = {
+  red_blue: GenerationIColorType;
   yellow:  GenerationIColorType;
 }
 
 type GenerationIColorType = {
-  backDefault: string;
-  backGray: string;
-  frontDefault: string;
-  frontGray: string;
+  back_default: string;
+  back_gray: string;
+  front_default: string;
+  front_gray: string;
 }
 
-type generationIIType = {
+type GenerationIIType = {
   crystal: GenerationII_IIIColorType;
   gold: GenerationII_IIIColorType;
   silver: GenerationII_IIIColorType;
 }
 
 type GenerationII_IIIColorType = {
-  backDefault: string;
-  backShiny: string;
-  frontDefault: string;
-  frontShiny: string;
+  back_default: string;
+  back_shiny: string;
+  front_default: string;
+  front_shiny: string;
 }
 
-type generationIIIType = {
+type GenerationIIIType = {
   emerald: EmeraldColorType;
-  fireredLeafgreen : GenerationII_IIIColorType;
-  rubySapphire: GenerationII_IIIColorType;
+  firered_leafgreen : GenerationII_IIIColorType;
+  ruby_sapphire: GenerationII_IIIColorType;
 }
 
 type EmeraldColorType = {
-  backDefault: string;
-  backShiny: string;
+  back_default: string;
+  back_shiny: string;
 }
 
-type generationIVType = {
-  diamondPearl: GenerationIV_VColorType;
-  heartgoldSoulsilver: GenerationIV_VColorType;
+type GenerationIVType = {
+  diamond_pearl: GenerationIV_VColorType;
+  heartgold_soulsilver: GenerationIV_VColorType;
   platinum: GenerationIV_VColorType;
 }
 
 type GenerationIV_VColorType = {
-  backDefault: string;
-  backFemale: string;
-  backShiny: string;
-  backShinyFemale: string;
-  frontDefault: string;
-  frontFemale: string;
-  frontShiny: string;
-  frontShinyFemale: string;
+  back_default: string;
+  back_female: string;
+  back_shiny: string;
+  back_shiny_female: string;
+  front_default: string;
+  front_female: string;
+  front_shiny: string;
+  front_shiny_female: string;
 }
 
 // Наследование интерфейсом типа BlackWhiteType
 
-interface generationVInterface extends BlackWhiteType{
+interface GenerationVInterface extends BlackWhiteType{
   animated: GenerationIV_VColorType;
 }
 
 type BlackWhiteType = {
-  blackWhite: BlackWhiteType;
+  black_white: BlackWhiteType;
 }
 
-type generationVIType = {
-  omegarubyAlphasapphire: omegarubyAlphasapphireType;
-  xY: omegarubyAlphasapphireType;
+type GenerationVIType = {
+  omegaruby_alphasapphire: OmegarubyAlphasapphireType;
+  'x-y': OmegarubyAlphasapphireType;
 }
 
-type omegarubyAlphasapphireType = {
-  frontDefault: string;
-  frontFemale: string;
-  frontShiny: string;
-  frontShinyFemale: string;
+type OmegarubyAlphasapphireType = {
+  front_default: string;
+  front_female: string;
+  front_shiny: string;
+  front_shiny_female: string;
 }
 
-type generationVIIType = {
+type GenerationVIIType = {
   icons: GenerationVII_VIIIColorType;
-  ultraSunUltraMoon : omegarubyAlphasapphireType
+  ultra_sun_ultra_moon : OmegarubyAlphasapphireType
 }
 
 type GenerationVII_VIIIColorType = {
-  frontDefault: string;
-  frontFemale: string;
+  front_default: string;
+  front_female: string;
 }
 
-type generationVIIIType = {
+type GenerationVIIIType = {
   icons: GenerationVII_VIIIColorType;
 }
 
 type StatsType = {
-  baseStat: number;
+  base_stat: number;
   effort: number;
   stat: GeneralType;
 }
 
-type PokemonSpeciesType = {
+type PokemonTypesType = {
   slot: number;
   type: GeneralType;
+}
+
+export type PokemonSpeciesType = {
+  base_happiness: number;
+  capture_rate: number;
+  color: GeneralType;
+  egg_groups: Array<GeneralType>;
+  evolution_chain: {
+    url: string;
+  }  
+  evolves_from_species: GeneralType;
+  flavor_text_entries: Array<FlavorTextEntriesType>;
+  forms_switchable: boolean;
+  gender_rate: number;
+  genera: Array<GeneraType>;
+  generation: GeneralType;
+  growth_rate: GeneralType;
+  habitat: GeneralType;
+  has_gender_differences: boolean;
+  hatch_counter: number;
+  id: number;
+  is_baby: boolean;
+  is_legendary: boolean;
+  is_mythical: boolean;
+  name: string;
+  order: number;
+  pal_park_encounters: Array<PalParkEncountersType>;
+  poxedex_number: Array<PokedexNumbers>;
+  varieties : Array<VarietiesType>;
+}
+
+type FlavorTextEntriesType = {
+  flavor_text: string;
+  language: GeneralType;
+  version: GeneralType;
+}
+
+type GeneraType = {
+  genus: string;
+  language: GeneralType;
+}
+
+type PalParkEncountersType = {
+  area: GeneralType;
+  base_score: number;
+  rate: number;
+}
+
+type PokedexNumbers = {
+  entry_number: number;
+  poxedex: GeneralType;
+}
+
+type VarietiesType = {
+  is_default: boolean;
+  pokemon: GeneralType;
 }
