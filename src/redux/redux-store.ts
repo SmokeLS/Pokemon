@@ -3,11 +3,13 @@ import thunkMiddleware, { ThunkAction } from 'redux-thunk';
 import appReducer from './app-reducer';
 import pokemonReducer from './pokemon-reducer';
 import pokemonSpeciesReducer from './pokemon-species-reducer';
+import pokemonAbilityReducer from './pokemon-ability-reducer';
 
 const rootReducer = combineReducers({
   app: appReducer,
   pokemon: pokemonReducer,
   pokemonSpecies: pokemonSpeciesReducer,
+  pokemonAbility: pokemonAbilityReducer,
 });
 
 type RootReducerType = typeof rootReducer;

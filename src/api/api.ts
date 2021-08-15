@@ -22,8 +22,7 @@ export const pokemonAPI = {
 
     return res.data.sprites.front_default;
   },
-  async getPokemons(offset: number = 0, limit : number = 20) {
-
+  async getPokemons(offset: number = 0, limit : number = 20) {    
     const res = await instance.get(
       `pokemon/?offset=${offset}&limit=${limit}`,
     );
@@ -42,9 +41,21 @@ export const pokemonAPI = {
     );
     return res.data.count;
   },
+  async getPokemonSpeciesCount() {
+    const res = await instance.get<CountResponse>(
+      `pokemon-species/`,
+    );
+    return res.data.count;
+  },
   async getPokemonSpecies(id: number = 1) {
     const res = await instance.get(
       `pokemon-species/${id}`,
+    );
+    return res.data;
+  },
+  async getPokemonAbility(url: string) {
+    const res = await instance.get(
+      url
     );
     return res.data;
   }

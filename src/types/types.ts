@@ -223,7 +223,7 @@ export type PokemonSpeciesType = {
 type FlavorTextEntriesType = {
   flavor_text: string;
   language: GeneralType;
-  version: GeneralType;
+  version_group: GeneralType;
 }
 
 type GeneraType = {
@@ -245,4 +245,43 @@ type PokedexNumbers = {
 type VarietiesType = {
   is_default: boolean;
   pokemon: GeneralType;
+}
+
+export type AbilityType = {
+  effect_changes: Array<EffectType>;
+  effect_entries: Array<EffectEntriesAbilityType>;
+  flavor_text_entries: Array<FlavorTextEntriesType>;
+  generation: GeneralType;
+  id: number;
+  is_main_series: boolean;
+  name: string;
+  names: Array<NamesType>;
+  pokemon: Array<PokemonAbilityType>
+}
+
+type EffectEntriesAbilityType = {
+  effect: string;
+  language: GeneralType;
+  short_effect: string;
+}
+
+type EffectType = {
+  effect_entries: Array<EffectEntriesType>;
+  version_group: GeneralType;
+}
+
+type EffectEntriesType = {
+  effect: string;
+  language: GeneralType;
+}
+
+type NamesType = {
+  language: GeneralType;
+  name: string;
+}
+
+type PokemonAbilityType = {
+  is_hidden: boolean;
+  pokemon: GeneralType;
+  slot: number;
 }

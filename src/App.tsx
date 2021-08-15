@@ -1,30 +1,67 @@
-import React, { EventHandler, useEffect, useState } from 'react';
-import { NavLink, Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import queryString from 'querystring';
 
-import { connect, useDispatch, useSelector } from 'react-redux';
 import Preloader from './common/Preloader/Preloader';
 import PokemonPage from './components/PokemonPage/PokemonPage';
 import Main from './components/Main/Main';
-import PokemonSpeciesPage from './components/PokemonSpeciesPage/PokemonSpeciesPage';
-
 import MenuNavigation from './components/MenuNavigation/MenuNavigation';
 import { AppStateType } from './redux/redux-store';
 import { setInitializedCount, setInitializedPokemon } from './redux/app-reducer';
+import NotFoundPage from './components/Pages/NotFoundPage';
+import Error from './common/Error/Error';
+import { setPokemonSpeciesCount } from './redux/pokemon-species-reducer';
 
 type PropsType = {
-  setInitializedPokemon: () => void;
+  setInitializedPokemon: (offset: number, pageSize: number) => void;
   setInitializedCount: () => void;
+};
+
+type queryParamsType = {
+  offset?: string;
+  limit?: string;
 };
 
 const App: React.FC<PropsType> = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const count = useSelector((state: AppStateType) => state.app.count);
   const isLoading = useSelector((state: AppStateType) => state.app.isLoading);
+  const offset = useSelector((state: AppStateType) => state.app.offset);
+  const pageSize = useSelector((state: AppStateType) => state.app.pageSize);
+  const globalError = useSelector((state: AppStateType) => state.app.globalError);
+  const parsed = queryString.parse(history.location.search.substr(1));
 
   useEffect(() => {
-    dispatch(setInitializedPokemon());
+    const parsed = queryString.parse(history.location.search.substr(1));
+
+    let offsetSearch = 0;
+    let pageSizeSearch = 24;
+
+    if (parsed.offset) offsetSearch = Number(parsed.offset);
+    if (parsed.limit) pageSizeSearch = Number(parsed.limit);
+
+    dispatch(setInitializedPokemon(offsetSearch, pageSizeSearch));
     dispatch(setInitializedCount());
-  }, [dispatch]);
+    dispatch(setPokemonSpeciesCount());
+  }, [history, dispatch]);
+
+  useEffect(() => {
+    const query: queryParamsType = {};
+
+    if (offset !== 0) query.offset = String(offset);
+    if (pageSize) query.limit = String(pageSize);
+
+    if (history.location.pathname === `/pokemons`) {
+      history.push({
+        pathname: '/pokemons',
+        search: queryString.stringify(query),
+      });
+    }
+  }, [history, offset, pageSize]);
+
+  if (globalError) return <Error />;
 
   if (isLoading) {
     return <Preloader />;
@@ -32,15 +69,14 @@ const App: React.FC<PropsType> = (props) => {
 
   return (
     <>
-      <MenuNavigation count={count} />
+      <MenuNavigation count={count} pokemonPageSize={parsed.limit} />
       <Switch>
         <Route path="/" exact>
           <Redirect to="/pokemons" />
         </Route>
-        <Route path="/pokemon/:id?" render={() => <PokemonPage />} />
-        <Route path="/pokemon-species/:id?" render={() => <PokemonSpeciesPage />} />
-        <Route path="/pokemons" render={() => <Main count={count} />} />
-        {/* <Route path="*" render={() => <NotFoundPage />} /> */}
+        <Route path="/pokemon/:id?" exact render={() => <PokemonPage />} />
+        <Route path="/pokemons" exact render={() => <Main count={count} />} />
+        <Route path="*" render={() => <NotFoundPage />} />
       </Switch>
     </>
   );
