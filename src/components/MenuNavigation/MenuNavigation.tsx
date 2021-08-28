@@ -69,13 +69,25 @@ const MenuNavigation: React.FC<PropsType> = React.memo((props) => {
         {width > 576 && (
           <Menu.Item key="menuItem1">
             <span>Pokemons page size {props.pokemonPageSize ? props.pokemonPageSize : 24}</span>
-            <NumericInput style={{ width: 120, marginLeft: 20 }} />
+            <NumericInput type="pokemonSize" style={{ width: 120, marginLeft: 20 }} />
           </Menu.Item>
         )}
         {width <= 576 && (
           <Menu.Item key="menuItem1">
             <span>Page size {props.pokemonPageSize ? props.pokemonPageSize : 24}</span>
-            <NumericInput style={{ width: 80, marginLeft: 10 }} />
+            <NumericInput type="pokemonSize" style={{ width: 80, marginLeft: 10 }} />
+          </Menu.Item>
+        )}
+        {width > 576 && (
+          <Menu.Item key="menuItem2">
+            <span>Input the pokemon's id</span>
+            <NumericInput type="pokemonId" style={{ width: 120, marginLeft: 20 }} />
+          </Menu.Item>
+        )}
+        {width <= 576 && (
+          <Menu.Item key="menuItem2">
+            <span>Input the pokemon's id</span>
+            <NumericInput type="pokemonId" style={{ width: 80, marginLeft: 10 }} />
           </Menu.Item>
         )}
       </Menu>

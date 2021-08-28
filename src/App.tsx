@@ -53,7 +53,7 @@ const App: React.FC<PropsType> = (props) => {
     if (offset !== 0) query.offset = String(offset);
     if (pageSize) query.limit = String(pageSize);
 
-    if (history.location.pathname === `/pokemons`) {
+    if (history.location.pathname === `/pokemons` && (query.limit || query.offset)) {
       history.push({
         pathname: '/pokemons',
         search: queryString.stringify(query),

@@ -85,6 +85,7 @@ const PokemonPage: React.FC<PropsType> = React.memo(() => {
     if (Number(params.id) <= pokemonSpeciesCount) {
       dispatch(setPokemonSpecies(Number(params.id)));
     }
+
     dispatch(setPokemonSpecies(null));
   }, [history, params, dispatch, pokemonSpeciesCount]);
 

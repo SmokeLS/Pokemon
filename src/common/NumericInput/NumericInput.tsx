@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { setInitializedPokemon } from '../../redux/app-reducer';
+import { setPokemon } from '../../redux/pokemon-reducer';
 
 type PropsType = {
   style: any;
+  type: 'pokemonSize' | 'pokemonId';
 };
 
 function formatNumber(value: string) {
@@ -29,12 +31,36 @@ const NumericInput: React.FC<PropsType> = React.memo((props) => {
   const history = useHistory();
   const [inputValue, setInputValue] = useState('');
 
-  const title = inputValue ? (
+  let title = inputValue ? (
     <span className="numeric-input-title">{inputValue !== '-' ? formatNumber(inputValue) : '-'}</span>
   ) : (
     'Input to set pokemons page size minimum = 6, maximum = 36'
   );
 
+  switch (props.type) {
+    case 'pokemonSize':
+      title = 'Input to set pokemons page size minimum = 6, maximum = 36';
+      break;
+    case 'pokemonId':
+      title = 'Input ID to see the pokemon';
+      break;
+    default:
+      title = <span className="numeric-input-title">{inputValue !== '-' ? formatNumber(inputValue) : '-'}</span>;
+  }
+
+  const switchCaseChoose = () => {
+    switch (props.type) {
+      case 'pokemonSize':
+        dispatch(setInitializedPokemon(0, Number(inputValue)));
+        history.push('/pokemons');
+        break;
+      case 'pokemonId':
+        if (Number(inputValue) === 0) return;
+        dispatch(setPokemon(Number(inputValue)));
+        history.push(`/pokemon/${inputValue}`);
+        break;
+    }
+  };
   const onChange = (e: any) => {
     const { value } = e.target;
     const reg = /^-?\d*(\.\d*)?$/;
@@ -45,14 +71,12 @@ const NumericInput: React.FC<PropsType> = React.memo((props) => {
 
   const onBlur = () => {
     if (!inputValue) return;
-    dispatch(setInitializedPokemon(0, Number(inputValue)));
-    history.push('/pokemons');
+    switchCaseChoose();
   };
 
   const onKeydown = (e: any) => {
     if (e.keyCode === 13) {
-      dispatch(setInitializedPokemon(0, Number(inputValue)));
-      history.push('/pokemons');
+      switchCaseChoose();
     }
   };
 
