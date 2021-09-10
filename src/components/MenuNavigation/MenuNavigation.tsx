@@ -1,6 +1,6 @@
 import { SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { actions, setInitializedPokemon } from '../../redux/app-reducer';
@@ -10,7 +10,7 @@ import useWindowDimensions from '../../common/WindowsDimensions/WindowsDimension
 
 type PropsType = {
   count: number;
-  pokemonPageSize: string | string[] | undefined;
+  pokemonPageSize?: string | string[];
 };
 
 const MenuNavigation: React.FC<PropsType> = React.memo((props) => {
@@ -18,8 +18,8 @@ const MenuNavigation: React.FC<PropsType> = React.memo((props) => {
   const history = useHistory();
   const params = useParams<{ id: string }>();
   const [current, setCurrent] = useState('mail');
-  const pageSize = useSelector((state: AppStateType) => state.app.pageSize);
-
+  const pageSize = useSelector((state: AppStateType) => state.app.pageSize);  
+  
   const { width } = useWindowDimensions();
 
   const { SubMenu } = Menu;

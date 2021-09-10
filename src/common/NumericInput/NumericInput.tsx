@@ -1,9 +1,9 @@
 import { Input, Tooltip } from 'antd';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { setInitializedPokemon } from '../../redux/app-reducer';
-import { setPokemon } from '../../redux/pokemon-reducer';
+import { AppStateType } from '../../redux/redux-store';
 
 type PropsType = {
   style: any;
@@ -29,7 +29,9 @@ function formatNumber(value: string) {
 const NumericInput: React.FC<PropsType> = React.memo((props) => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const pageSize = useSelector((state: AppStateType) => state.app.pageSize);
   const [inputValue, setInputValue] = useState('');
+
 
   let title = inputValue ? (
     <span className="numeric-input-title">{inputValue !== '-' ? formatNumber(inputValue) : '-'}</span>
@@ -52,12 +54,13 @@ const NumericInput: React.FC<PropsType> = React.memo((props) => {
     switch (props.type) {
       case 'pokemonSize':
         dispatch(setInitializedPokemon(0, Number(inputValue)));
-        history.push('/pokemons');
+        history.push(`/pokemons?limit=${pageSize}`);
         break;
       case 'pokemonId':
         if (Number(inputValue) === 0) return;
-        dispatch(setPokemon(Number(inputValue)));
-        history.push(`/pokemon/${inputValue}`);
+        history.push({
+          pathname: `/pokemon/${inputValue}`,
+        });
         break;
     }
   };
@@ -69,12 +72,8 @@ const NumericInput: React.FC<PropsType> = React.memo((props) => {
     }
   };
 
-  const onBlur = () => {
-    if (!inputValue) return;
-    switchCaseChoose();
-  };
-
   const onKeydown = (e: any) => {
+    if (!inputValue) return;
     if (e.keyCode === 13) {
       switchCaseChoose();
     }
@@ -86,7 +85,6 @@ const NumericInput: React.FC<PropsType> = React.memo((props) => {
         {...props}
         value={inputValue}
         onChange={onChange}
-        onBlur={onBlur}
         placeholder="Input a number"
         maxLength={25}
         onKeyDown={onKeydown}
